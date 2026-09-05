@@ -21,11 +21,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} — Bridal & Occasion Mehndi Artist`,
+    default: `${site.name} | Bridal & Occasion Mehndi Artist`,
     template: `%s · ${site.name}`,
   },
   description:
-    "RAC_Henna creates bridal, engagement, festival and baby-shower mehndi with natural paste and deep, lasting stain. Bookings open — call or WhatsApp to hold your date.",
+    "RAC_Henna creates bridal, engagement, festival and baby-shower mehndi with natural paste and deep, lasting stain. Bookings open. Call or WhatsApp to hold your date.",
   keywords: [
     "mehndi artist",
     "bridal mehndi",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     "RAC_Henna",
   ],
   openGraph: {
-    title: `${site.name} — Bridal & Occasion Mehndi Artist`,
+    title: `${site.name} | Bridal & Occasion Mehndi Artist`,
     description: site.tagline,
     type: "website",
   },

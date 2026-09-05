@@ -29,7 +29,7 @@ export const services: Service[] = [
     icon: Crown,
     blurb: "Full hands, arms and feet",
     detail:
-      "The centrepiece. Dense, story-led detail woven around your own motifs — initials, a first meeting, a promise — with rich stain that deepens for days.",
+      "The centrepiece. Dense, story-led detail woven around your own motifs (initials, a first meeting, a promise) with rich stain that deepens for days.",
   },
   {
     slug: "engagement",
@@ -45,7 +45,7 @@ export const services: Service[] = [
     icon: Sparkles,
     blurb: "Karwa Chauth, Eid, Diwali, Teej",
     detail:
-      "Classic mandalas, jaali and floral trails. Bookings fill quickly around festival dates — reserve early to hold your slot.",
+      "Classic mandalas, jaali and floral trails. Bookings fill quickly around festival dates, so reserve early to hold your slot.",
   },
   {
     slug: "baby-shower",
@@ -97,6 +97,6 @@ export const placeholderGallery: GalleryPhoto[] = [
 export const steps = [
   { n: "01", title: "Message me", body: "Send your date, city and occasion on WhatsApp. I reply the same day." },
   { n: "02", title: "Pick your design", body: "We agree on density, coverage and the motifs that mean something to you." },
-  { n: "03", title: "Hold the date", body: "A small advance locks your slot. Bridal dates go first — book early." },
+  { n: "03", title: "Hold the date", body: "A small advance locks your slot. Bridal dates go first, so book early." },
   { n: "04", title: "Wear it well", body: "You get aftercare notes so the stain deepens dark and lasts." },
 ];

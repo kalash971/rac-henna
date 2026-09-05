@@ -89,7 +89,7 @@ export default function GalleryManager({ items }: { items: GalleryItem[] }) {
           className="flex min-h-11 w-full cursor-pointer items-center justify-center gap-2.5 rounded-2xl border border-dashed border-gold/45 bg-ink-2 px-6 py-6 text-sm text-ivory transition-colors hover:border-gold hover:bg-ink-3 sm:w-auto"
         >
           <Upload className="size-4 text-gold" aria-hidden />
-          {busy ?? "Add photos — JPEG, PNG or WebP, up to 10MB each"}
+          {busy ?? "Add photos: JPEG, PNG or WebP, up to 10MB each"}
         </label>
         <input
           ref={input}

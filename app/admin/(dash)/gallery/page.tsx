@@ -36,7 +36,7 @@ export default async function GalleryPage() {
           Cloudinary is not configured, so uploads will fail. Set{" "}
           <code className="text-gold">CLOUDINARY_CLOUD_NAME</code>,{" "}
           <code className="text-gold">CLOUDINARY_API_KEY</code> and{" "}
-          <code className="text-gold">CLOUDINARY_API_SECRET</code> — they are all on the
+          <code className="text-gold">CLOUDINARY_API_SECRET</code>. They are all on the
           Cloudinary dashboard home page.
         </p>
       )}

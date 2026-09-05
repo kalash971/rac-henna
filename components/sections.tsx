@@ -93,7 +93,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
-            I have started my henna journey with RAC_Henna — hand-drawn mehndi for
+            I have started my henna journey with RAC_Henna, hand-drawn mehndi for
             brides, engagements, festivals and baby showers. Every design is drawn
             around you, never traced from a book.
           </p>
@@ -157,7 +157,7 @@ export function Services() {
               Mehndi for every kind of <span className="text-gold">celebration</span>
             </>
           }
-          lead="Five ways to work together. Tell me the occasion and I will tell you what it needs — coverage, time on the day, and how early to book."
+          lead="Five ways to work together. Tell me the occasion and I will tell you what it needs: coverage, time on the day, and how early to book."
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -192,7 +192,7 @@ export function Services() {
               <div className="mt-6">
                 <h3 className="text-2xl text-ivory">Something else in mind?</h3>
                 <p className="mt-3 text-sm leading-relaxed text-ivory/75">
-                  Birthdays, house functions, a group of friends before a wedding — if it
+                  Birthdays, house functions, a group of friends before a wedding. If it
                   calls for mehndi, ask me.
                 </p>
                 <a
@@ -314,7 +314,7 @@ export function Gallery({ photos }: { photos: GalleryPhoto[] }) {
             className="inline-flex items-center gap-2.5 text-sm text-muted transition-colors hover:text-gold"
           >
             <InstagramIcon className="size-[18px]" />
-            More on Instagram — @{INSTAGRAM}
+            More on Instagram: @{INSTAGRAM}
             <ArrowUpRight className="size-4" aria-hidden />
           </a>
         </Reveal>
@@ -366,7 +366,7 @@ export function Journey() {
               A small business, <span className="text-gold">started with love</span>
             </>
           }
-          lead="RAC_Henna is new, and it is mine. Every booking is a real day in someone's life, and I treat it that way — unhurried hands, natural paste, and a design that belongs to you and no one else."
+          lead="RAC_Henna is new, and it is mine. Every booking is a real day in someone's life, and I treat it that way: unhurried hands, natural paste, and a design that belongs to you and no one else."
         />
 
         <Reveal delay={0.12}>
@@ -388,7 +388,7 @@ export function Journey() {
             <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href={site.wa(
-                  `Have a look at RAC_Henna — mehndi artist. Instagram: instagram.com/${INSTAGRAM} · Bookings: ${CALL}`
+                  `Have a look at RAC_Henna, mehndi artist. Instagram: instagram.com/${INSTAGRAM} · Bookings: ${CALL}`
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -460,7 +460,7 @@ export function Booking() {
     // longer counts this as a user gesture and blocks the popup — so WhatsApp,
     // which is the delivery path that matters, goes first.
     window.open(site.wa(result.message), "_blank", "noopener,noreferrer");
-    setStatus("WhatsApp is open with your enquiry — press send and I will reply.");
+    setStatus("WhatsApp is open with your enquiry. Press send and I will reply.");
 
     const saved = await saveEnquiry(enquiry);
     if (!saved.saved && saved.reason) {
@@ -483,7 +483,7 @@ export function Booking() {
               Let us hold your <span className="text-gold">date</span>
             </>
           }
-          lead="Fill this in and it opens WhatsApp with your details ready to send — or just call me. Bridal dates go first, so earlier is better."
+          lead="Fill this in and it opens WhatsApp with your details ready to send, or just call me. Bridal dates go first, so earlier is better."
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-5">

@@ -14,12 +14,12 @@ export function DataError({ retry, detail }: { retry: string; detail?: string })
     <div className="mt-8 rounded-3xl border border-danger/40 bg-danger/10 p-6 sm:p-8">
       <h2 className="font-display text-3xl text-ivory">Could not reach the database</h2>
       <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-        Nothing is lost — this is the connection, not your data. The usual causes:
+        Nothing is lost. This is the connection, not your data. The usual causes:
       </p>
       <ul className="mt-4 space-y-2 text-sm text-muted">
         {[
           "The database user's password does not match MONGODB_URI (Atlas → Database Access → Edit → Reset password).",
-          "Atlas Network Access does not allow 0.0.0.0/0 — serverless functions have no fixed IP.",
+          "Atlas Network Access does not allow 0.0.0.0/0, and serverless functions have no fixed IP.",
           "The cluster is paused. Free clusters pause themselves after being idle.",
         ].map((cause) => (
           <li key={cause} className="flex gap-2">

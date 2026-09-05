@@ -17,7 +17,7 @@ export default async function LoginPage() {
           {[
             ["MONGODB_URI", "MongoDB Atlas connection string"],
             ["ADMIN_PASSWORD", "the password you will sign in with"],
-            ["AUTH_SECRET", "any long random string — signs the session cookie"],
+            ["AUTH_SECRET", "any long random string that signs the session cookie"],
           ].map(([name, why]) => (
             <li key={name} className="glass rounded-2xl p-4">
               <code className="text-gold">{name}</code>

@@ -46,7 +46,7 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
           </h1>
 
           <p style={{ margin: "0.75rem 0 0", fontSize: "0.9375rem", lineHeight: 1.7, color: "#c3ab95" }}>
-            The page could not be loaded. Bookings are still open — call{" "}
+            The page could not be loaded. Bookings are still open, so call{" "}
             <a href="tel:+919901349272" style={{ color: "#d9a94c" }}>
               9901349272
             </a>{" "}

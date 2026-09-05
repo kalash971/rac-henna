@@ -70,7 +70,7 @@ export default function NotFound() {
           className="rise mx-auto mt-6 max-w-sm text-base leading-relaxed text-muted"
           style={{ ["--i" as string]: 2 }}
         >
-          Like a stain after three weeks. The page you wanted is not here — but
+          Like a stain after three weeks. The page you wanted is not here, but
           the bookings are still open.
         </p>
 
@@ -99,7 +99,7 @@ export default function NotFound() {
         </div>
 
         <p className="rise mt-10 text-sm text-muted" style={{ ["--i" as string]: 4 }}>
-          Or just message me —{" "}
+          Or just message me on{" "}
           <a
             href={site.wa("Hi RAC_Henna! I would like to enquire about a mehndi booking.")}
             target="_blank"

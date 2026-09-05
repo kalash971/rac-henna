@@ -31,7 +31,7 @@ export async function saveEnquiry(input: Enquiry): Promise<SaveResult> {
 
   try {
     if (ip && (await countRecent("enquiry", ip, 60)) >= LIMIT) {
-      return { saved: false, reason: "That is a lot of enquiries at once — send this one on WhatsApp." };
+      return { saved: false, reason: "That is a lot of enquiries at once. Send this one on WhatsApp." };
     }
 
     const id = await insertEnquiry({
