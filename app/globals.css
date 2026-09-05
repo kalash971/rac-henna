@@ -1,26 +1,377 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * The token names are ROLES, not literal colours, and they flip with the theme:
+ *
+ *   ink / ink-2 / ink-3   page ground, raised surface, pressed surface
+ *   ivory                 primary text
+ *   muted                 secondary text
+ *   line                  decorative borders and dividers
+ *   line-strong           borders of form controls (WCAG 1.4.11 wants 3:1)
+ *   gold / gold-soft      brand accent, and its hover/emphasis variant
+ *   henna / henna-deep    brand fill, and its tinted surface
+ *
+ * So in the light theme `ink` is ivory-coloured and `ivory` is espresso. Odd to
+ * read, but it means the palette changes in one place instead of across every
+ * className in the app.
+ *
+ * ponytail: rename to bg/fg/surface if the palette ever grows past this.
+ * Every pair below is verified at 4.5:1 for text and 3:1 for control borders.
+ */
+
+@theme {
+  /* Dark is the designed default. */
+  --color-ink: #120a07;
+  --color-ink-2: #1b100a;
+  --color-ink-3: #241610;
+  --color-henna: #b8431c;
+  --color-henna-deep: #6e1f12;
+  --color-gold: #d9a94c;
+  --color-gold-soft: #f0d9a0;
+  --color-ivory: #f7efe4;
+  --color-muted: #c3ab95;
+  --color-mehndi: #6f8a44;
+  --color-line: #3a2418;
+  --color-line-strong: #7d6552;
+  /* the CSS stand-in painted behind the canvas */
+  --scene-glow: #3a1d10;
+  --scene-mid: #1f120b;
+  /* error text needs 4.5:1 — the henna red does not reach it */
+  --color-danger: #ef8a6f;
+
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Warm ivory. Henna on skin, rather than gold in candlelight.
+ *
+ * Declared twice on purpose:
+ *
+ *   1. under prefers-color-scheme, so a light-system visitor gets the right
+ *      palette from the stylesheet alone — no flash while the boot script
+ *      runs, and the correct theme even with JavaScript disabled;
+ *   2. under [data-theme="light"], so an explicit choice beats the system.
+ *
+ * The :not([data-theme="dark"]) guard is what lets someone on a light OS
+ * choose the dark theme and keep it.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-ink: #fbf6ee;
+  --color-ink-2: #fffdf8;
+  --color-ink-3: #f2e7d8;
+  --color-henna: #a8371a;
+  /* a tinted surface here, not a dark fill: it backs icon chips and gradients */
+  --color-henna-deep: #e8d3bf;
+  --color-gold: #8a6212;
+  --color-gold-soft: #6d4c08;
+  --color-ivory: #2a1710;
+  --color-muted: #6b5343;
+  --color-mehndi: #4a6127;
+  --color-line: #e3d3bf;
+  --color-line-strong: #9c7f5c;
+  --scene-glow: #fff9ef;
+  --scene-mid: #f6ebda;
+  --color-danger: #a81f16;
+  }
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root[data-theme="light"] {
+  --color-ink: #fbf6ee;
+  --color-ink-2: #fffdf8;
+  --color-ink-3: #f2e7d8;
+  --color-henna: #a8371a;
+  /* a tinted surface here, not a dark fill: it backs icon chips and gradients */
+  --color-henna-deep: #e8d3bf;
+  --color-gold: #8a6212;
+  --color-gold-soft: #6d4c08;
+  --color-ivory: #2a1710;
+  --color-muted: #6b5343;
+  --color-mehndi: #4a6127;
+  --color-line: #e3d3bf;
+  --color-line-strong: #9c7f5c;
+  --scene-glow: #fff9ef;
+  --scene-mid: #f6ebda;
+  --color-danger: #a81f16;
+}
+
+:root {
+  /* Native selects, date pickers, scrollbars and autofill follow this. */
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* fixed nav offset for anchor jumps */
+    scroll-padding-top: 5.5rem;
+    /* `clip`, not `hidden`: hidden would make html a scroll container and
+       break scroll-padding-top above. Belt and braces — nothing should
+       overflow, but a phone must never scroll sideways. */
+    overflow-x: clip;
+  }
+  body {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-henna);
+    color: var(--color-ink);
+  }
+  /*
+   * Native dropdowns render their popup with the OS palette. `color-scheme`
+   * handles most of it; this covers the browsers that colour options from the
+   * author styles instead, which is what left one select white on espresso.
+   */
+  option {
+    background: var(--color-ink-2);
+    color: var(--color-ivory);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+  }
+}
+
+@layer components {
+  /* Small uppercase label used above headings */
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+  /*
+   * Translucent card surface. No backdrop-filter: these cards all sit over a
+   * near-opaque scrim, so the blur was invisible — but each one still cost the
+   * compositor a full re-blur on every scroll frame, and there are ten of them.
+   */
+  .glass {
+    background: color-mix(in oklab, var(--color-ink-2) 88%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-gold) 18%, transparent);
+  }
+  /*
+   * Painted behind the WebGL canvas: no dark flash before it is ready, and a
+   * graceful floor if it never is. Follows the theme like everything else.
+   */
+  .scene-ground {
+    background: radial-gradient(
+      60% 55% at 50% 42%,
+      var(--scene-glow) 0%,
+      var(--scene-mid) 45%,
+      var(--color-ink) 100%
+    );
+    transition: background 0.6s ease;
+  }
+
+  /* The canvas arrives a beat after the text; do not let it pop in. */
+  .scene-fade {
+    animation: scene-in 1.6s var(--ease-silk) both;
+    transition: opacity 0.6s ease;
+  }
+  /*
+   * On espresso the mandala is a low-contrast glow behind the copy. On ivory
+   * the very same geometry is near-maximum contrast and swallows the headline,
+   * so in the light theme it steps back to a watermark.
+   */
+  [data-theme="light"] .scene-fade {
+    opacity: 0.3;
+  }
+  @keyframes scene-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-line) 15%, var(--color-line) 85%, transparent);
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Motion used by the pages that had no styling of their own.
+   * ------------------------------------------------------------------ */
+
+  /*
+   * Behind the header, above the scene. The header is transparent until you
+   * scroll, which reads fine on espresso — but on ivory the nav links landed
+   * on mid-tone petals and washed out. Only the light theme needs it.
+   */
+  .nav-veil {
+    background: transparent;
+    transition: background 0.6s ease;
+  }
+  [data-theme="light"] .nav-veil {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-ink) 94%, transparent) 0%,
+      color-mix(in oklab, var(--color-ink) 72%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  /*
+   * Sits between the scene and the hero copy. Transparent on the dark theme,
+   * where the scene is already dim enough to read over.
+   */
+  .hero-veil {
+    background: transparent;
+    transition: background 0.6s ease;
+  }
+  [data-theme="light"] .hero-veil {
+    background: radial-gradient(
+      115% 85% at 18% 50%,
+      color-mix(in oklab, var(--color-ink) 94%, transparent) 0%,
+      color-mix(in oklab, var(--color-ink) 74%, transparent) 45%,
+      transparent 100%
+    );
+  }
+
+  /* Staggered entrance. Set --i on each child to order them. */
+  .rise {
+    animation: rise 0.7s var(--ease-silk) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Slow drift for decorative background art. */
+  .drift {
+    animation: drift 26s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(6deg) scale(1.04); }
+  }
+
+  /* A henna line drawing itself in. */
+  .draw {
+    stroke-dasharray: var(--len, 400);
+    stroke-dashoffset: var(--len, 400);
+    animation: draw 2.4s var(--ease-silk) forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Loading placeholder. A sweep, not a pulse — it reads as progress. */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-ink-2);
+  }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-gold) 12%, transparent),
+      transparent
+    );
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    to { transform: translateX(100%); }
+  }
+
+  /*
+   * Theme toggle icons. Both are in the DOM and CSS chooses — that keeps the
+   * markup independent of JavaScript and free of hydration mismatches.
+   */
+  .theme-icon-dark { display: none; }
+  [data-theme="light"] .theme-icon-dark { display: block; }
+  [data-theme="light"] .theme-icon-light { display: none; }
+
+  /* Underline that grows from the centre on hover. */
+  .link-grow {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.35s var(--ease-silk);
+  }
+  .link-grow:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Theme switching
+ *
+ * Custom properties do not interpolate, so the palette cannot simply be
+ * transitioned. Two mechanisms, in order of preference:
+ *
+ * 1. View Transitions: the browser snapshots the old frame and we wipe the
+ *    new one in from the toggle button. Nothing else has to know.
+ * 2. Where that is unsupported, `.theme-switching` turns on a colour
+ *    transition for the length of the swap only — permanently transitioning
+ *    every element would tax every hover and scroll for the rest of the visit.
+ * ------------------------------------------------------------------ */
+
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition:
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    color 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  /* Replace the default cross-fade; the wipe below does the work. */
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-wipe 0.62s var(--ease-silk);
+}
+@keyframes theme-wipe {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+}
+
+/* Everything decorative stops when the visitor asks for calm. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    animation: none !important;
+  }
 }
