@@ -375,3 +375,8 @@
     animation: none !important;
   }
 }
+
+/* Stop the page scrolling behind an open modal (gallery preview). */
+html:has(dialog[open]) {
+  overflow: hidden;
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Menu, MessageCircle, Phone, X } from "lucide-react";
 import { InstagramIcon } from "./icons";
 import { ThemeToggle } from "./theme";
@@ -12,22 +13,6 @@ const links = [
   { href: "#how", label: "How it works" },
   { href: "#journey", label: "My journey" },
 ];
-
-/** Paisley monogram, same motif as the 3D mandala. */
-function Mark() {
-  return (
-    <svg viewBox="0 0 32 32" className="h-8 w-8 shrink-0" aria-hidden>
-      <path
-        d="M16 4c7 1 10 7 8 12s-8 8-12 6 0-6 3-6 5 3 3 6-6 4-9 1"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <circle cx="16" cy="27" r="1.6" fill="currentColor" />
-    </svg>
-  );
-}
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -71,7 +56,7 @@ export default function Nav() {
             href="#top"
             className="flex items-center gap-2.5 text-gold transition-colors hover:text-gold-soft"
           >
-            <Mark />
+            <Image src="/logo.png" alt="" width={48} height={48} priority className="size-12 shrink-0 rounded-full" />
             <span className="font-display text-2xl leading-none tracking-tight text-ivory">
               RAC<span className="text-gold">_</span>Henna
             </span>

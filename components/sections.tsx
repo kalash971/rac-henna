@@ -7,9 +7,12 @@ import {
   ArrowUpRight,
   CalendarDays,
   Check,
+  ChevronLeft,
+  ChevronRight,
   MessageCircle,
   Phone,
   Sparkles,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import { InstagramIcon } from "./icons";
@@ -226,6 +229,18 @@ export function Gallery({ photos }: { photos: GalleryPhoto[] }) {
     [filter, photos]
   );
 
+  // Index into `shown` of the photo open in the full-screen preview.
+  const [open, setOpen] = useState<number | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = dialogRef.current;
+    if (open !== null && !d?.open) d?.showModal();
+    if (open === null && d?.open) d.close();
+  }, [open]);
+  const step = (by: number) =>
+    setOpen((i) => (i === null ? i : (i + by + shown.length) % shown.length));
+  const current = open === null ? null : shown[open];
+
   return (
     <section id="gallery" className="scroll-mt-20 py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -280,7 +295,12 @@ export function Gallery({ photos }: { photos: GalleryPhoto[] }) {
                 transition={{ duration: 0.4, ease: SILK }}
                 className="group relative overflow-hidden rounded-3xl border border-line bg-ink-2"
               >
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpen(shown.indexOf(item))}
+                  aria-label={`View ${item.label} full size`}
+                  className="relative block aspect-[4/5] w-full cursor-zoom-in overflow-hidden"
+                >
                   {item.url ? (
                     <Image
                       src={item.url}
@@ -296,8 +316,8 @@ export function Gallery({ photos }: { photos: GalleryPhoto[] }) {
                       className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                     />
                   )}
-                </div>
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/70 to-transparent p-3 pt-12 sm:p-4">
+                </button>
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/70 to-transparent p-3 pt-12 sm:p-4">
                   <p className="text-xs tracking-widest text-gold uppercase">{item.category}</p>
                   <p className="mt-1 text-[13px] leading-snug text-ivory sm:text-sm">{item.label}</p>
                 </div>
@@ -305,6 +325,72 @@ export function Gallery({ photos }: { photos: GalleryPhoto[] }) {
             ))}
           </AnimatePresence>
         </motion.ul>
+
+        {/* Native modal dialog: Escape closes it and focus stays inside. */}
+        <dialog
+          ref={dialogRef}
+          aria-label={current?.label}
+          onClose={() => setOpen(null)}
+          onClick={(e) => e.target === e.currentTarget && setOpen(null)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") step(-1);
+            if (e.key === "ArrowRight") step(1);
+          }}
+          className="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-4 text-ivory backdrop:bg-ink/95 backdrop:backdrop-blur-sm sm:p-8"
+        >
+          {current && (
+            <div
+              className="flex h-full flex-col items-center justify-center gap-4"
+              onClick={(e) => e.target === e.currentTarget && setOpen(null)}
+            >
+              <div className="relative h-[78dvh] w-full max-w-5xl">
+                {current.url ? (
+                  <Image
+                    src={current.url}
+                    alt={current.label}
+                    fill
+                    sizes="100vw"
+                    className="object-contain"
+                  />
+                ) : (
+                  <MandalaArt seed={current.seed ?? 1} className="mx-auto aspect-square h-full max-w-full" />
+                )}
+              </div>
+              <div className="text-center">
+                <p className="text-xs tracking-widest text-gold uppercase">{current.category}</p>
+                <p className="mt-1 text-sm">{current.label}</p>
+              </div>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setOpen(null)}
+            aria-label="Close preview"
+            className="absolute top-4 right-4 flex size-11 items-center justify-center rounded-full border border-line bg-ink/70 sm:top-6 sm:right-6"
+          >
+            <X className="size-5" aria-hidden />
+          </button>
+          {shown.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                aria-label="Previous photo"
+                className="absolute top-1/2 left-3 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/70 sm:left-6"
+              >
+                <ChevronLeft className="size-5" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={() => step(1)}
+                aria-label="Next photo"
+                className="absolute top-1/2 right-3 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/70 sm:right-6"
+              >
+                <ChevronRight className="size-5" aria-hidden />
+              </button>
+            </>
+          )}
+        </dialog>
 
         <Reveal className="mt-10">
           <a
@@ -733,6 +819,7 @@ export function Footer() {
     <footer className="relative bg-ink border-t border-line pt-12 pb-28 sm:py-14">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 sm:px-8 md:flex-row md:items-end md:justify-between">
         <div>
+          <Image src="/logo.png" alt="" width={96} height={96} className="mb-4 size-24 rounded-full" />
           <p className="font-display text-3xl text-ivory">
             RAC<span className="text-gold">_</span>Henna
           </p>
